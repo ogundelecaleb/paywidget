@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import SideBar from "./component/sideBar";
 import Modal from "./component/Modal";
-import { Navigate, Outlet, redirect } from "react-router-dom";
+import {Outlet } from "react-router-dom";
 
 
 const WidgetHome = () => {
