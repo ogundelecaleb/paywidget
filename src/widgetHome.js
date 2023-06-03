@@ -5,6 +5,7 @@ import { Outlet } from "react-router-dom";
 
 const WidgetHome = () => {
   const [amount, setAmount] = useState("");
+  const [isOpen, setIsOpen] = useState(true);
 
   useEffect(() => {
     // Grab the URL parameters
@@ -13,34 +14,40 @@ const WidgetHome = () => {
     const secretKey = params.get("secretKey");
     const amount = params.get("amount");
     const currency = params.get("currency");
-    // const onCloseCallbackStr = params.get("onCloseCallbackStr");
+    const onCloseCallbackStr = params.get("onCloseCallback");
 
-    // const onCloseCallback = new Function(`return (${onCloseCallbackStr})`)();
-
-    
-
-    setAmount(amount);
-    // processPayment(publicKey, secretKey, amount, currency);
-  }, []);
-
-  // function processPayment(publicKey, secretKey, currency) {
-   
-  //   console.log("Payment details:");
-  //   console.log("Public Key:", publicKey);
-  //   console.log("Secret Key:", secretKey);
-  //   console.log("Amount:", amount);
-  //   console.log("Currency:", currency);
   
-  // }
+    const onCloseCallback = new Function(`return (${onCloseCallbackStr})`)();
+    // Process the payment using the retrieved details
+    handleCloseModal(onCloseCallback)
+    setAmount(amount);
+    processPayment(publicKey, secretKey, amount, currency);
+  }
+  , []);
 
-  const [isOpen, setIsOpen] = useState(true);
 
-  const handleCloseModal = () => {
+  const handleCloseModal = (onCloseCallback) => {
     setIsOpen(false);
-    // if (typeof onCloseCallback === "function") {
-    //   onCloseCallback({ status: "closed" });
-    // }
+    if (typeof onCloseCallback === "function") {
+      onCloseCallback({ status: "closed" });
+    }
   };
+
+
+  function processPayment(publicKey, secretKey, currency) {
+    // You can use payment APIs or any other payment processing methods here
+
+    // Example code to log the payment details
+    console.log("Payment details:");
+    console.log("Public Key:", publicKey);
+    console.log("Secret Key:", secretKey);
+    console.log("Amount:", amount);
+    console.log("Currency:", currency);
+  }
+
+ 
+
+
 
   return (
     <div>
