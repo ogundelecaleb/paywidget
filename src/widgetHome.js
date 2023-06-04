@@ -6,7 +6,7 @@ import { Outlet } from "react-router-dom";
 const WidgetHome = () => {
   // const [amount, setAmount] = useState("");
   const [isOpen, setIsOpen] = useState(true);
-
+const [callbackStr, setCallbackStr] = useState(null);
   useEffect(() => {
     // Grab the URL parameters
     const params = new URLSearchParams(window.location.search);
@@ -20,8 +20,8 @@ const WidgetHome = () => {
     // eval(var func = function(){return onCloseCallbackStr})
 
     /*eslint no-new-func: 0*/
-    const onCloseCallback = new Function(`return (${onCloseCallbackStr})`)();
-
+    
+    setCallbackStr(onCloseCallbackStr);
 
 
     // const onCloseCallback = new Function("return" + onCloseCallbackStr)();
@@ -33,7 +33,7 @@ const WidgetHome = () => {
     // setAmount(amount);
     processPayment(publicKey, secretKey, amount, currency);
   },[] );
-
+  const onCloseCallback = new Function(`return (${callbackStr})`)();
   const handleCloseModal = () => {
     setIsOpen(false);
     if (typeof onCloseCallback === "function") {
