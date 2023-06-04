@@ -4,7 +4,7 @@ import Modal from "./component/Modal";
 import { Outlet } from "react-router-dom";
 
 const WidgetHome = () => {
-  const [amount, setAmount] = useState("");
+  // const [amount, setAmount] = useState("");
   const [isOpen, setIsOpen] = useState(true);
 
   useEffect(() => {
@@ -26,9 +26,9 @@ const WidgetHome = () => {
     // }())
     // Process the payment using the retrieved details
     handleCloseModal(onCloseCallback);
-    setAmount(amount);
+    // setAmount(amount);
     processPayment(publicKey, secretKey, amount, currency);
-  }, []);
+  }, );
 
   const handleCloseModal = (F) => {
     setIsOpen(false);
@@ -37,7 +37,7 @@ const WidgetHome = () => {
     }
   };
 
-  function processPayment(publicKey, secretKey, currency) {
+  function processPayment(publicKey, secretKey, currency,amount) {
     // You can use payment APIs or any other payment processing methods here
 
     // Example code to log the payment details
