@@ -29,16 +29,16 @@ const WidgetHome = () => {
     // (function testFunction() {  const F = new Function('(onCloseCallbackStr)');
     // }())
     // Process the payment using the retrieved details
-    handleCloseModal(onCloseCallback);
+    // handleCloseModal(onCloseCallback);
     // setAmount(amount);
     processPayment(publicKey, secretKey, amount, currency);
-  }, );
+  },[] );
 
-  const handleCloseModal = (F) => {
+  const handleCloseModal = () => {
     setIsOpen(false);
-    if (typeof F === "function") {
-      F({ status: "closed" });
-    }
+    if (typeof onCloseCallback === "function") {
+      onCloseCallback({ status: "closed" });
+    }
   };
 
   function processPayment(publicKey, secretKey, currency,amount) {
