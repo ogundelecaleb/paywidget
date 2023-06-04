@@ -20,7 +20,11 @@ const WidgetHome = () => {
     // eval(var func = function(){return onCloseCallbackStr})
 
     /*eslint no-new-func: 0*/
-    const onCloseCallback = new Function("return" + onCloseCallbackStr)();
+    const onCloseCallback = new Function(`return (${onCloseCallbackStr})`)();
+
+
+
+    // const onCloseCallback = new Function("return" + onCloseCallbackStr)();
 
     // (function testFunction() {  const F = new Function('(onCloseCallbackStr)');
     // }())
