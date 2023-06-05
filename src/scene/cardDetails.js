@@ -1,61 +1,64 @@
-import React from "react";
-import { useNavigate,useOutletContext } from "react-router-dom";
-
+import React, { useState } from "react";
+import { useNavigate, useOutletContext } from "react-router-dom";
 
 const CardDetails = () => {
-    const navigate = useNavigate()
-    const [successCallbackStr] = useOutletContext();
-    // const [cardNumber, setCardNumber] = useState("");
+  const navigate = useNavigate();
+  const [successCallbackStr] = useOutletContext();
+  const [cardNumber, setCardNumber] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [cvvErrorMessage, setCvvErrorMessage] = useState("")
+  const [cvv, setCvv] = useState("")
 
+  /*eslint no-new-func: 0*/
+  const onCloseCallback = new Function(`return (${successCallbackStr})`)();
 
-    /*eslint no-new-func: 0*/
-    const onCloseCallback = new Function(`return (${successCallbackStr})`)();
+  function handleCardNumber(event) {
+    let new_cardNumber = event.target.value;
+    setCardNumber(new_cardNumber);
 
-
-    // function handleCardNumber(event) {
-    //   let new_cardNumber = event.target.value;
-    //   setCardNumber(new_cardNumber);
-  
-    //   // regular expressions to validate Card Number
-    //   var lowerCase = /[a-z]/g;
-    //   var upperCase = /[A-Z]/g;
-    //   var numbers = /[0-9]/g;
-    //   var specialCharRegExp = /(?=.*?[#?!@$%^&*-])/;
-    //   if (!new_pass.match(upperCase)) {
-    //     setErrorMessage("Password should contains Uppercase letters!");
-    //   } else if (!new_pass.match(lowerCase)) {
-    //     setErrorMessage("Password should contain lowercase letters!");
-    //   } else if (!new_pass.match(numbers)) {
-    //     setErrorMessage("Password should contains numbers also!");
-    //   } else if (!new_pass.match(specialCharRegExp)) {
-    //     setErrorMessage("Password should contains special character e.g *@#!% !");
-    //   } else if (new_pass.length < 6) {
-    //     setErrorMessage("Password length should be more than 10.");
-    //   } else {
-    //     setErrorMessage("Password is strong!");
-    //   }
-    //   // for confirm password
-    // }
-  
-    function handlePayment(){
-      navigate("/index/otp")
-      if (typeof onCloseCallback === "function") {
-        onCloseCallback({ status: "This is success message" });
-      }
+    var specialCharRegExp = /(?=.*?[#?!@$%^&*-])/;
+    if (new_cardNumber.match(specialCharRegExp)) {
+      setErrorMessage("Card number should not contains special character");
+    } else if (new_cardNumber.length < 16) {
+      setErrorMessage("Card number must be 16 digit..");
+    } else {
+      setErrorMessage("");
     }
-
-    function c_cvv_format(){
-      
-      const value = document.getElementById("c_cvv").value;
-      if(value.toString().length >2){
-          return false;
-      }else{
-          var v = value.replace(
-              /[^0-9]/g, '' // To allow only numbers
-          )
-          document.getElementById("c_cvv").value = v;
-      }    
   }
+
+  function handleCvv(event) {
+    let new_cvv = event.target.value;
+    setCvv(new_cvv);
+
+    var specialCharRegExp = /(?=.*?[#?!@$%^&*-])/;
+    if (new_cvv.match(specialCharRegExp)) {
+      setCvvErrorMessage("CVV should not contains special character");
+    } else if (new_cvv.length < 3) {
+      setCvvErrorMessage("CVV must be 3 digit..");
+    } else {
+      setErrorMessage("");
+    }
+  }
+
+  function handlePayment() {
+    navigate("/index/otp");
+    if (typeof onCloseCallback === "function") {
+      onCloseCallback({ status: "This is success message" });
+    }
+  }
+
+  // function c_cvv_format() {
+  //   const value = document.getElementById("c_cvv").value;
+  //   if (value.toString().length > 2) {
+  //     return false;
+  //   } else {
+  //     var v = value.replace(
+  //       /[^0-9]/g,
+  //       "" // To allow only numbers
+  //     );
+  //     document.getElementById("c_cvv").value = v;
+  //   }
+  // }
   return (
     <div className="py-5  px-[20px]">
       {/* <div className="flex  justify-end"> */}
@@ -72,15 +75,18 @@ const CardDetails = () => {
               Card Number
             </p>
             <input
-              type="text"
+              type="tel"
               className="block w-full px-4 py-[9px] placeholder:text-[#A0AEC0] placeholder:font-normal font-medium text-[#1A202C] text-[16px] leading-[24px] tracking-[0.3px] bg-white border border-[#E2E8F0]  rounded-xl focus:outline-none focus:ring-[#FFDB47] focus:border-[#FFDB47] sm:text-sm"
               placeholder="card number"
               autofocus
               required
-
-              // value={phoneNumber}
-              // onChange={(e) => setPhoneNumber(e.target.value)}
+              maxLength="16"
+              value={cardNumber}
+              onChange={handleCardNumber}
             />
+            <p className="text-xs trackin text-orange-400 leading-[24px] tracking-[0.3px] px-2">
+              {errorMessage}
+            </p>
           </div>
           <div className="flex items-center flex-col md:flex-row gap-2 md:gap-5 mt-2">
             <div className="container ">
@@ -140,17 +146,20 @@ const CardDetails = () => {
                 CVV
               </p>
               <input
-              id="c_cvv"
+                id="c_cvv"
                 type="tel"
                 className="block w-full px-4 py-[9px] placeholder:text-[#A0AEC0] placeholder:font-normal font-medium text-[#1A202C] text-[16px] leading-[24px] tracking-[0.3px] bg-white border border-[#E2E8F0]  rounded-xl focus:outline-none focus:ring-[#FFDB47] focus:border-[#FFDB47] sm:text-sm"
-               
                 placeholder="435"
                 autofocus
                 required
-                onkeypress={(e)=> c_cvv_format(e)} maxlength="3"
-                // value={phoneNumber}
-                // onChange={(e) => setPhoneNumber(e.target.value)}
+              
+                maxLength="3"
+                value={cvv}
+                onChange={handleCvv}
               />
+              <p className="text-xs trackin text-orange-400 leading-[24px] tracking-[0.3px] px-2">
+              {cvvErrorMessage}
+            </p>
             </div>
           </div>
           <div className="mt-4">

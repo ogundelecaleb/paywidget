@@ -4,6 +4,7 @@ import Modal from "./component/Modal";
 import { Outlet } from "react-router-dom";
 
 const WidgetHome = () => {
+  const BaseApiUrl = "http://94.229.79.27:39213/v1";
   // const [amount, setAmount] = useState("");
   const [isOpen, setIsOpen] = useState(true);
   const [callbackStr, setCallbackStr] = useState(null);
@@ -20,7 +21,6 @@ const WidgetHome = () => {
     const onSuccessCallbackStr = params.get("onSuccessCallback");
 
     /*eslint no-new-func: 0*/
-
     setCallbackStr(onCloseCallbackStr);
     setSuccessCallbackStr(onSuccessCallbackStr);
 
@@ -42,6 +42,23 @@ const WidgetHome = () => {
   function processPayment(publicKey, secretKey, currency, amount) {
     // You can use payment APIs or any other payment processing methods here
 
+    fetch(`${BaseApiUrl}/payment/initiate`, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        "Public-Key": publicKey,
+      },
+      body: JSON.stringify({ currency }),
+    })
+      .then((response) => response.json())
+      .then((res) => {
+        if (res.isSuccessful) {
+          console.log("initiatesuccessful");
+          // errorMessage(res.message||res.title||"")
+        }
+      });
+
     // Example code to log the payment details
     console.log("Payment details:");
     console.log("Public Key:", publicKey);
@@ -50,38 +67,7 @@ const WidgetHome = () => {
     console.log("Currency:", currency);
   }
 
-  // fetch(`${BaseApiUrl}/payment/config`, {
-  //   method: 'POST',
-  //   headers: {
-  //   'Accept': 'application/json',
-  //   'Content-Type': 'application/json',
-  //   "Public-Key": publicKey
-  //   },
-  //   body: JSON.stringify({currency, country})
-  //   })
-  //   .then(response => response.json())
-  //   .then(res => {
-  //   if(!res.requestSuccessful){
-  //       errorMessage(res.message||res.title||"")
-  //    }else{
-  //       const {Cards, Transfer, MobileMoney} = res.responseData.priceingConfigs
-  //       cardAmount = Cards?configAmount(Cards):'';
-  //       transferAmount = Transfer?configAmount(Transfer):"";
-  //       mobileMoneyAmount = MobileMoney?configAmount(MobileMoney):"";
-  //       console.log({mobileMoneyAmount})
-  //       dataPayload['initReference'] = res.responseData.reference;
-  //       if(currency.toLowerCase() === "kes"){
-  //           document.getElementById( 'kenya-option-container-495gjjhg-gkhkhjg' ).style.display = 'flex';
-  //       }else {
-  //           document.getElementById( 'transfer-container-495gjjhg-gkhkhjg' ).style.display = 'flex';
-  //       }
-  //       document.getElementById("widget-payment-container").style.display="none"
-  //   }
-  //   document.getElementById("transaction-loading-container-fgti594").style.display="none"
-  //   }).catch(error => {
-  //       console.log({error})
 
-  //   })
 
   return (
     <div>
