@@ -55,7 +55,9 @@ const WidgetHome = () => {
       .then((res) => {
         if (res.isSuccessful) {
           console.log("initiatesuccessful");
-          // errorMessage(res.message||res.title||"")
+         
+        }else if (!res.isSuccessful) {
+ console.log("error message:", res.message||res.title||"")
         }
       });
 
