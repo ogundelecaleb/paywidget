@@ -19,6 +19,8 @@ const WidgetHome = () => {
     const currency = params.get("currency");
     var onCloseCallbackStr = params.get("onCloseCallback");
     const onSuccessCallbackStr = params.get("onSuccessCallback");
+    
+    console.log(amount)
 
     /*eslint no-new-func: 0*/
     setCallbackStr(onCloseCallbackStr);
@@ -26,8 +28,7 @@ const WidgetHome = () => {
 
     // Process the payment using the retrieved details
 
-    // setAmount(amount);
-    processPayment(publicKey, secretKey, amount, currency);
+    processPayment({ publicKey, secretKey, amount, currency });
   }, []);
   const onCloseCallback = new Function(`return (${callbackStr})`)();
 
@@ -39,25 +40,24 @@ const WidgetHome = () => {
     }
   };
 
-  function processPayment(publicKey, secretKey, currency, amount) {
+  const processPayment = ({ publicKey, secretKey, currency, amount }) => {
     // You can use payment APIs or any other payment processing methods here
-
+    console.log(amount);
     fetch(`${BaseApiUrl}/payment/initiate`, {
       method: "POST",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
-        "Public-Key": publicKey,
+        "Public-Key": "PLPK_gUrE7kbNTUufkYy_rxJ5aA",
       },
-      body: JSON.stringify({ amount }),
+      body: JSON.stringify({ currencyCode: amount }),
     })
       .then((response) => response.json())
       .then((res) => {
         if (res.isSuccessful) {
           console.log("initiatesuccessful");
-         
-        }else if (!res.isSuccessful) {
- console.log("error message:", res.message||res.title||"")
+        } else if (!res.isSuccessful) {
+          console.log("error message:", res.message || res.title || "");
         }
       });
 
@@ -67,9 +67,7 @@ const WidgetHome = () => {
     console.log("Secret Key:", secretKey);
     console.log("Amount:", amount);
     console.log("Currency:", currency);
-  }
-
-
+  };
 
   return (
     <div>
