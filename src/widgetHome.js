@@ -49,7 +49,7 @@ const WidgetHome = () => {
         "Content-Type": "application/json",
         "Public-Key": publicKey,
       },
-      body: JSON.stringify({ currency }),
+      body: JSON.stringify({ amount }),
     })
       .then((response) => response.json())
       .then((res) => {
