@@ -25,10 +25,11 @@ const WidgetHome = () => {
     var onCloseCallbackStr = params.get("onCloseCallback");
     const onSuccessCallbackStr = params.get("onSuccessCallback");
     
-    console.log(amount)
-console.log(merchantName)
-    console.log(sessionRef)
-    console.log("channel:", channel)
+     /*eslint no-unused-vars: 0*/
+//     console.log(amount)
+// console.log(merchantName)
+//     console.log(sessionRef)
+//     console.log("channel:", channel)
 
     /*eslint no-new-func: 0*/
     setCallbackStr(onCloseCallbackStr);

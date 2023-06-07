@@ -13,7 +13,7 @@ const CardDetails = () => {
   const [visa, setVisa] = useState(false);
   const [cardType, setCardType] = useState("");
   const [expiry, setExpiry] = useState("");
-
+ /*eslint no-unused-vars: 0*/
   /*eslint no-new-func: 0*/
   const onCloseCallback = new Function(`return (${successCallbackStr})`)();
 
