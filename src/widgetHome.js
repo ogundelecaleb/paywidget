@@ -9,6 +9,11 @@ const WidgetHome = () => {
   const [isOpen, setIsOpen] = useState(true);
   const [callbackStr, setCallbackStr] = useState(null);
   const [successCallbackStr, setSuccessCallbackStr] = useState(null);
+  const [currency, setCurrency] = useState("");
+  const [merchantLogo, setMerchantLogo] = useState("")
+  const [merchantName, setMerchantName] = useState("")
+  const [sessionRef,setSessionRef] = useState("")
+  const [channel, setChannel] = useState("")
 
   useEffect(() => {
     // Grab the URL parameters
@@ -21,6 +26,9 @@ const WidgetHome = () => {
     const onSuccessCallbackStr = params.get("onSuccessCallback");
     
     console.log(amount)
+console.log(merchantName)
+    console.log(sessionRef)
+    console.log("channel:", channel)
 
     /*eslint no-new-func: 0*/
     setCallbackStr(onCloseCallbackStr);
@@ -48,13 +56,18 @@ const WidgetHome = () => {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
-        "Public-Key": "PLPK_gUrE7kbNTUufkYy_rxJ5aA",
+        "Public-Key": publicKey ,
       },
       body: JSON.stringify({ currencyCode: currency }),
     })
       .then((response) => response.json())
       .then((res) => {
-        if (res.isSuccessful) {
+        if (res.isSuccessful && res.data) {
+          setSessionRef(res.data.sessionReference)
+          setCurrency(res.data.currency)
+          setMerchantLogo(res.data.merchantLogo)
+          setMerchantName(res.data.merchantName)
+          setChannel(res.data.channels)
           console.log("initiatesuccessful");
         } else if (!res.isSuccessful) {
           console.log("error message:", res.message || res.title || "");
@@ -106,12 +119,7 @@ const WidgetHome = () => {
           </div>
         </div>
       </Modal>
-      <div className="absolute w-full   bottom-[100px] z-[1000]">
-        <p className="text-center text-[14px] mx-auto">
-          Powered by{" "}
-          <span className="font-bold cursor-pointer text-white">Paylode</span>
-        </p>
-      </div>
+      
     </div>
   );
 };
