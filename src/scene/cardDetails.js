@@ -27,7 +27,10 @@ const CardDetails = () => {
   const [expiry, setExpiry] = useState("");
   const [unpartCardNumber, setUnpartCardNumber] = useState("");
   const [loading, setLoaading] = useState(false);
-  const [formData, setFormData] = useState("");
+
+
+
+
   /*eslint no-unused-vars: 0*/
   /*eslint no-useless-escape: 0*/
   /*eslint no-new-func: 0*/
@@ -136,6 +139,14 @@ const CardDetails = () => {
     }
   }
 
+
+const currencyMap ={
+  "NGN": "₦", 
+  "USD": "$",
+  "GBP": "£"
+}
+
+
   // function handleCvv(event) {
   //   let new_cvv = event.target.value;
   //   setCvv(new_cvv);
@@ -218,84 +229,18 @@ const CardDetails = () => {
       value = v;
     }
   }
-
-  async function handleCardPayment(e) {
-    e.preventDefault();
-    setLoaading(true);
-    const response = await fetch(`${BaseApiUrl}/payment/charge`, {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        "Public-Key": publicKey,
-      },
-      body: JSON.stringify({
-        clientReference: "",
-        currencyCode: currency,
-        sessionReference: sessionRef,
-        channel: "Card",
-        amount: amount,
-        chargeParameters: {
-          CardNumber: unpartCardNumber,
-          ExpiryMonth: month,
-          ExpiryYear: "20" + year,
-          CardCvv: cvv,
-        },
-        customerInformation: {
-          email: email,
-          phoneNumber: phoneNumber,
-          firstName: firstName,
-          lastName: lastName,
-        },
-
-        redirectUrl: "",
-      }),
-    });
-    const data = await response.json(); //
-    if (data.isSuccessful && data.data) {
-      setTransactionRef(data?.data?.transactionReference);
-      if (data.data.details?.FormData?.Body === undefined) {
-        navigate("/index/otp", { state: data?.data?.transactionReference });
-      } else {
-        console.log(data.data.details?.FormData.Body);
-        // Create a new HTML document
-        // const stringedBody = (data?.data?.details?.FormData.Body).toString();
-        // const newTab = window.open("", "_blank");
-
-        // Set the content of the new page
-    //     newTab.document.write(`<html ><head><title>Document</title></head><body>${stringedBody}          <script>
-    //     var from = document.getElementById("threedsChallengeRedirectForm");
-    //     from.submit();
-    // </script></body></html>`);
-        // Close the document and focus on the new tab
-        // newTab.document.close();
-        // newTab.focus();
-        // return <ThreeDAuth Body={data.data.details?.FormData.Body}/>
-        // navigate("www.google.com")
-        navigate("/3dauth", { state: data.data.details?.FormData.Body });
-        // setFormData(data.data.details?.FormData.Body)
-      }
-
-      setLoaading(false);
-
-      console.log("CHARGEsuccessful");
-    } else if (!data.isSuccessful) {
-      setLoaading(false);
-      console.log("error message: not successful");
-    }
-  }
   return (
     <div className="py-5  px-[20px]">
       {/* <div className="flex  justify-end"> */}
       <div className="text-right text-[10px] pr-3 mt-2">
         <p>{email}</p>
         <p>
-          Pay <span className="font-bold text-[#124072]">₦{amount}</span>{" "}
+          Pay <span className="font-bold text-[#124072]">{currencyMap[currency]?? currencyMap["NGN"]}{amount}</span>{" "}
         </p>
       </div>
       {/* </div> */}
 
-      <form onSubmit={handleCardPayment}>
+      <form onSubmit={()=>{navigate("/index/cardpin", { state: {unpartCardNumber: unpartCardNumber, month:month, year:"20"+year, cvv:cvv  } })}}>
         <div className="overflow-hidden  sm:rounded-md">
           <div className="container mt-[30px]">
             <p className="text-[#718096]  text-[10px] leading-[21px] tracking-[0.2px] font-bold mb-[7px]">
@@ -307,7 +252,7 @@ const CardDetails = () => {
                 type="tel"
                 className="block w-full px-4 py-[9px] placeholder:text-[#A0AEC0] placeholder:font-normal font-medium text-[#1A202C] text-[16px] leading-[24px] tracking-[0.3px] bg-white border border-[#E2E8F0]  rounded-xl focus:outline-none focus:ring-[#124072] focus:border-[#124072] sm:text-sm"
                 placeholder="0000 0000 0000 0000"
-                autofocus
+                autoFocus
                 required
                 // value={cardNumber}
                 onChange={handleCardNumber}
@@ -361,7 +306,7 @@ const CardDetails = () => {
                 type="tel"
                 className="block w-full px-4 py-[9px] placeholder:text-[#A0AEC0] placeholder:font-normal font-medium text-[#1A202C] text-[16px] leading-[24px] tracking-[0.3px] bg-white border border-[#E2E8F0]  rounded-xl focus:outline-none focus:ring-[#124072] focus:border-[#124072] sm:text-sm"
                 placeholder="435"
-                autofocus
+                autoFocus
                 required
                 maxLength="3"
                 onChange={handlecvv}
@@ -374,7 +319,7 @@ const CardDetails = () => {
               type="submit"
               className="py-[9px] items-center rounded-[24px] w-[80%]  md:w-[50%] mx-auto bg-[#124072] text-[white] text-[10px] leading-[24px] tracking-[0.2px] font-bold flex justify-center "
             >
-              Pay NGN {amount}{" "}
+              Pay {currency} {amount}{" "}
               {loading && (
                 <svg
                   className="ml-4 w-6 h-6 text-[white] animate-spin"

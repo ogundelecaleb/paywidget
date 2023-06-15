@@ -53,7 +53,7 @@ const Otp = () => {
   }
 
   return (
-    <div className="py-5  px-[20px]">
+    <div className="py-5 w-full  px-[20px]">
       <h3 className="text-[20px] text-[#1a202c]  font-bold pb-1">
         Validate OTP 
       </h3>

@@ -7,6 +7,10 @@ import Success from "./success";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import FailedTransaction from "./failedTransaction";
 import ThreeDAuth from "./3dAuth";
+import Failed from "./scene/failed";
+import Successfull from "./scene/sucess";
+import CardPin from "./scene/cardPin";
+
 
 const queryClient = new QueryClient();
 
@@ -20,6 +24,10 @@ const App = () => {
               <Route index element={<CardDetails />} />
               <Route path="/index/cardDetails" element={<CardDetails />} />
               <Route path="/index/otp" element={<Otp />} />
+              <Route path="/index/failed" element={<Failed />} />
+              <Route path="/index/success" element={<Successfull />} />
+              <Route path="/index/cardpin" element={<CardPin />} />
+            
             </Route>{" "}
             <Route path="/success" element={<Success />} />
             <Route path="/3dauth" element={<ThreeDAuth />} />
