@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useOutletContext } from "react-router-dom";
-import ThreeDAuth from "../3d";
+
 
 const CardDetails = () => {
   const navigate = useNavigate();
@@ -37,9 +37,6 @@ const CardDetails = () => {
   const onCloseCallback = new Function(`return (${successCallbackStr})`)();
 
   useEffect(() => {
-    console.log("month:", month);
-    console.log("year:", transactionRef);
-    console.log(unpartCardNumber);
     splitExpry();
   });
 
@@ -123,7 +120,7 @@ const CardDetails = () => {
       } else {
         setCardType("");
       }
-      // document.getElementById("card-pin").style.display = "block";
+     
     }
     var i;
     var len;
@@ -303,7 +300,7 @@ const currencyMap ={
               </p>
               <input
                 id="c_cvv"
-                type="tel"
+                type="password"
                 className="block w-full px-4 py-[9px] placeholder:text-[#A0AEC0] placeholder:font-normal font-medium text-[#1A202C] text-[16px] leading-[24px] tracking-[0.3px] bg-white border border-[#E2E8F0]  rounded-xl focus:outline-none focus:ring-[#124072] focus:border-[#124072] sm:text-sm"
                 placeholder="435"
                 autoFocus

@@ -98,11 +98,11 @@ const WidgetHome = () => {
       });
 
     // Example code to log the payment detail
-    console.log("Payment details:");
-    console.log("Public Key:", publicKey);
-    console.log("Secret Key:", secretKey);
-    console.log("Amount:", amount);
-    console.log("Currency:", currency);
+    // console.log("Payment details:");
+    // console.log("Public Key:", publicKey);
+    // console.log("Secret Key:", secretKey);
+    // console.log("Amount:", amount);
+    // console.log("Currency:", currency);
   };
 
   return (
