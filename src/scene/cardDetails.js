@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useOutletContext } from "react-router-dom";
 
-
 const CardDetails = () => {
   const navigate = useNavigate();
   const [
@@ -15,6 +14,7 @@ const CardDetails = () => {
     firstName,
     lastName,
     phoneNumber,
+    redirectUrl,
   ] = useOutletContext();
   const [cardNumber, setCardNumber] = useState("");
   const [transactionRef, setTransactionRef] = useState("");
@@ -28,15 +28,13 @@ const CardDetails = () => {
   const [unpartCardNumber, setUnpartCardNumber] = useState("");
   const [loading, setLoaading] = useState(false);
 
-
-
-
   /*eslint no-unused-vars: 0*/
   /*eslint no-useless-escape: 0*/
   /*eslint no-new-func: 0*/
   const onCloseCallback = new Function(`return (${successCallbackStr})`)();
 
   useEffect(() => {
+    console.log("currency:", currency);
     splitExpry();
   });
 
@@ -120,7 +118,6 @@ const CardDetails = () => {
       } else {
         setCardType("");
       }
-     
     }
     var i;
     var len;
@@ -136,13 +133,11 @@ const CardDetails = () => {
     }
   }
 
-
-const currencyMap ={
-  "NGN": "₦", 
-  "USD": "$",
-  "GBP": "£"
-}
-
+  const currencyMap = {
+    NGN: "₦",
+    USD: "$",
+    GBP: "£",
+  };
 
   // function handleCvv(event) {
   //   let new_cvv = event.target.value;
@@ -158,6 +153,7 @@ const currencyMap ={
   //   }
   // }
 
+  //handle expiry format
   const expriy_format = (value) => {
     const expdate = value;
 
@@ -213,6 +209,7 @@ const currencyMap ={
   //   }
   // }
 
+  //hnadle cvv input
   function handlecvv(e) {
     let value = e.target.value;
     setCvv(value);
@@ -228,16 +225,30 @@ const currencyMap ={
   }
   return (
     <div className="py-5  px-[20px]">
-      {/* <div className="flex  justify-end"> */}
       <div className="text-right text-[10px] pr-3 mt-2">
         <p>{email}</p>
         <p>
-          Pay <span className="font-bold text-[#124072]">{currencyMap[currency]?? currencyMap["NGN"]}{amount}</span>{" "}
+          Pay{" "}
+          <span className="font-bold text-[#124072]">
+            {/* {currencyMap[currency]?? currencyMap["NGN"]} */}
+            {currency === "NGN" ? "₦" : currency === "USD" ? "$" : ""}
+            {amount}
+          </span>{" "}
         </p>
       </div>
-      {/* </div> */}
 
-      <form onSubmit={()=>{navigate("/index/cardpin", { state: {unpartCardNumber: unpartCardNumber, month:month, year:"20"+year, cvv:cvv  } })}}>
+      <form
+        onSubmit={() => {
+          navigate("/index/cardpin", {
+            state: {
+              unpartCardNumber: unpartCardNumber,
+              month: month,
+              year: "20" + year,
+              cvv: cvv,
+            },
+          });
+        }}
+      >
         <div className="overflow-hidden  sm:rounded-md">
           <div className="container mt-[30px]">
             <p className="text-[#718096]  text-[10px] leading-[21px] tracking-[0.2px] font-bold mb-[7px]">
@@ -247,7 +258,7 @@ const currencyMap ={
               <input
                 id="c_number"
                 type="tel"
-                className="block w-full px-4 py-[9px] placeholder:text-[#A0AEC0] placeholder:font-normal font-medium text-[#1A202C] text-[16px] leading-[24px] tracking-[0.3px] bg-white border border-[#E2E8F0]  rounded-xl focus:outline-none focus:ring-[#124072] focus:border-[#124072] sm:text-sm"
+                className="block w-full px-2 py-[5px] md:px-4 md:py-[9px] placeholder:text-[#A0AEC0] placeholder:font-normal font-medium text-[#1A202C] text-[16px] leading-[24px] tracking-[0.3px] bg-white border border-[#E2E8F0]  rounded-xl focus:outline-none focus:ring-[#124072] focus:border-[#124072] sm:text-sm"
                 placeholder="0000 0000 0000 0000"
                 autoFocus
                 required
@@ -271,10 +282,10 @@ const currencyMap ={
                 )}
               </div>
             </div>
-
+            {/* 
             <p className="text-xs trackin text-orange-400 leading-[24px] tracking-[0.3px] px-2">
               {errorMessage}
-            </p>
+            </p> */}
           </div>
           <div className="flex  flex-row gap-2 md:gap-5 justify-around mt-2">
             <div class="md:w-[35%] ">
@@ -283,7 +294,7 @@ const currencyMap ={
               </label>
               <div class="input-field ">
                 <input
-                  className="block w-full px-4 py-[9px] placeholder:text-[#A0AEC0] placeholder:font-normal font-medium text-[#1A202C] text-[16px] leading-[24px] tracking-[0.3px] bg-white border border-[#E2E8F0]  rounded-xl focus:outline-none focus:ring-[#124072] focus:border-[#124072] sm:text-sm"
+                  className="block w-full px-2 py-[5px] md:px-4 md:py-[9px] placeholder:text-[#A0AEC0] placeholder:font-normal font-medium text-[#1A202C] text-[16px] leading-[24px] tracking-[0.3px] bg-white border border-[#E2E8F0]  rounded-xl focus:outline-none focus:ring-[#124072] focus:border-[#124072] sm:text-sm"
                   required
                   placeholder="MM / YY"
                   id="c_expiry"
@@ -295,14 +306,14 @@ const currencyMap ={
             </div>
 
             <div className="container  md:w-[35%] ">
-              <p className="text-[#718096] text-[10px] leading-[21px] tracking-[0.2px] font-bold mb-[7px]">
+              <label className="text-[#718096]  text-[10px] leading-[21px] tracking-[0.2px] font-bold mb-[7px]">
                 CVV
-              </p>
+              </label>
               <input
                 id="c_cvv"
                 type="password"
-                className="block w-full px-4 py-[9px] placeholder:text-[#A0AEC0] placeholder:font-normal font-medium text-[#1A202C] text-[16px] leading-[24px] tracking-[0.3px] bg-white border border-[#E2E8F0]  rounded-xl focus:outline-none focus:ring-[#124072] focus:border-[#124072] sm:text-sm"
-                placeholder="435"
+                className="block w-full px-2 py-[5px] md:px-4 md:py-[9px] text-center placeholder:text-[#A0AEC0] placeholder:font-normal font-medium text-[#1A202C] text-[16px] leading-[24px] tracking-[0.3px] bg-white border border-[#E2E8F0]  rounded-xl focus:outline-none focus:ring-[#124072] focus:border-[#124072] sm:text-sm"
+                placeholder="***"
                 autoFocus
                 required
                 maxLength="3"
@@ -314,7 +325,7 @@ const currencyMap ={
             <button
               // onClick={handlePayment}
               type="submit"
-              className="py-[9px] items-center rounded-[24px] w-[80%]  md:w-[50%] mx-auto bg-[#124072] text-[white] text-[10px] leading-[24px] tracking-[0.2px] font-bold flex justify-center "
+              className="py-[9px] items-center rounded-[16px] w-[80%]  md:w-[50%] mx-auto bg-[#124072] text-[white] text-[10px] leading-[24px] tracking-[0.2px] font-bold flex justify-center "
             >
               Pay {currency} {amount}{" "}
               {loading && (
