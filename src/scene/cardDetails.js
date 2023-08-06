@@ -6,6 +6,7 @@ const CardDetails = () => {
   const [
     successCallbackStr,
     publicKey,
+    merchantLogo,
     sessionRef,
     currency,
     amount,
@@ -17,13 +18,13 @@ const CardDetails = () => {
     redirectUrl,
   ] = useOutletContext();
   const [cardNumber, setCardNumber] = useState("");
-  const [transactionRef, setTransactionRef] = useState("");
+  const [disabled, setDisabled] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
-  const [cvvErrorMessage, setCvvErrorMessage] = useState("");
+  const [expiryErrorMessage, setExpiryErrorMessage] = useState(false);
   const [cvv, setCvv] = useState("");
   const [year, setYear] = useState("");
   const [month, setMonth] = useState("");
-  const [cardType, setCardType] = useState("");
+  const [cardType, setCardType] = useState(null);
   const [expiry, setExpiry] = useState("");
   const [unpartCardNumber, setUnpartCardNumber] = useState("");
   const [loading, setLoaading] = useState(false);
@@ -34,9 +35,17 @@ const CardDetails = () => {
   const onCloseCallback = new Function(`return (${successCallbackStr})`)();
 
   useEffect(() => {
-    console.log("currency:", currency);
     splitExpry();
-  });
+    if (expiry.length > 1 && cvv > 1 && unpartCardNumber > 1) {
+      setDisabled(false);
+    } else {
+      setDisabled(true)
+    }
+
+    if (year != null && year.length > 3) {
+      setExpiryErrorMessage(true);
+    }
+  }, [expiry, cvv, unpartCardNumber]);
 
   const splitExpry = () => {
     const mm = expiry.substring(0, 2);
@@ -73,11 +82,9 @@ const CardDetails = () => {
     var parts = [];
     setUnpartCardNumber(v);
 
-    // if (new_cardNumber.length < 1) {
-    //   setVisa(false);
-    //   setVerve(false);
-    //   setMastercard(false);
-    // }
+    if (new_cardNumber.length < 1) {
+      setCardType(null);
+    }
     const masterFormat = [
       "22",
       "23",
@@ -139,20 +146,6 @@ const CardDetails = () => {
     GBP: "£",
   };
 
-  // function handleCvv(event) {
-  //   let new_cvv = event.target.value;
-  //   setCvv(new_cvv);
-
-  //   var specialCharRegExp = /(?=.*?[#?!@$%^&*-])/;
-  //   if (new_cvv.match(specialCharRegExp)) {
-  //     setCvvErrorMessage("CVV should not contains special character");
-  //   } else if (new_cvv.length < 3) {
-  //     setCvvErrorMessage("CVV must be 3 digit..");
-  //   } else {
-  //     setErrorMessage("");
-  //   }
-  // }
-
   //handle expiry format
   const expriy_format = (value) => {
     const expdate = value;
@@ -190,10 +183,6 @@ const CardDetails = () => {
         /\/\//g,
         "/" // Prevent entering more than 1 /
       );
-    // const expDateFormatter =
-    //   expdate.replace(/\//g, "").substring(0, 2) +
-    //   (expdate.length > 2 ? "/" : "") +
-    //   expdate.replace(/\//g, "").substring(2, 4);
 
     return expDateFormatter;
   };
@@ -201,13 +190,6 @@ const CardDetails = () => {
   const onChangeExp = (e) => {
     setExpiry(e.target.value);
   };
-
-  // function handlePayment() {
-  //   navigate("/index/otp");
-  //   if (typeof onCloseCallback === "function") {
-  //     onCloseCallback({ status: "This is success message" });
-  //   }
-  // }
 
   //hnadle cvv input
   function handlecvv(e) {
@@ -224,17 +206,26 @@ const CardDetails = () => {
     }
   }
   return (
-    <div className="py-5  px-[20px]">
-      <div className="text-right text-[10px] pr-3 mt-2">
-        <p>{email}</p>
-        <p>
-          Pay{" "}
-          <span className="font-bold text-[#124072]">
-            {/* {currencyMap[currency]?? currencyMap["NGN"]} */}
-            {currency === "NGN" ? "₦" : currency === "USD" ? "$" : ""}
-            {amount}
-          </span>{" "}
-        </p>
+    <div className="py-5  px-[10px]">
+      <div className="text-right text-[10px] pr-3 mt-2 flex items-center justify-between ">
+        <div>
+          <img
+            src={merchantLogo != null ? merchantLogo : "../../paylodelogo.png"}
+            alt=""
+            className="h-[40px] max-w-[60px] object-contain md:hidden"
+          />{" "}
+        </div>
+        <div>
+          <p>{email}</p>
+          <p>
+            Pay{" "}
+            <span className="font-bold text-[#124072]">
+              {/* {currencyMap[currency]?? currencyMap["NGN"]} */}
+              {currency === "NGN" ? "₦" : currency === "USD" ? "$" : ""}
+              {amount}
+            </span>{" "}
+          </p>
+        </div>
       </div>
 
       <form
@@ -250,15 +241,15 @@ const CardDetails = () => {
         }}
       >
         <div className="overflow-hidden  sm:rounded-md">
-          <div className="container mt-[30px]">
-            <p className="text-[#718096]  text-[10px] leading-[21px] tracking-[0.2px] font-bold mb-[7px]">
+          <div className="container mt-[20px]">
+            <label className="text-[#718096]  text-[10px] leading-[21px] tracking-[0.2px] font-bold mb-[7px]">
               Card Number
-            </p>
+            </label>
             <div className="relative">
               <input
                 id="c_number"
                 type="tel"
-                className="block w-full px-2 py-[5px] md:px-4 md:py-[9px] placeholder:text-[#A0AEC0] placeholder:font-normal font-medium text-[#1A202C] text-[16px] leading-[24px] tracking-[0.3px] bg-white border border-[#E2E8F0]  rounded-xl focus:outline-none focus:ring-[#124072] focus:border-[#124072] sm:text-sm"
+                className="block w-full px-2 py-[5px] md:px-4 md:py-[9px] placeholder:text-[#A0AEC0] placeholder:font-normal font-medium text-[#1A202C] text-[16px] leading-[24px] tracking-[0.3px] bg-white border border-[#E2E8F0]  rounded-md focus:outline-none focus:ring-[#124072] focus:border-[#124072] sm:text-sm"
                 placeholder="0000 0000 0000 0000"
                 autoFocus
                 required
@@ -266,26 +257,25 @@ const CardDetails = () => {
                 onChange={handleCardNumber}
               />
 
-              <div className="absolute right-1 -translate-y-[90%] h-[36px]">
-                {cardType && cardType === "master" ? (
-                  <img
-                    src="../mastercard.png"
-                    alt=""
-                    className="h-[25px] object-contain"
-                  />
-                ) : cardType === "verve" ? (
-                  <img src="../verve.png" alt="" className=" object-contain" />
-                ) : cardType === "visa" ? (
-                  <img src="../visa.png" alt="" className=" object-contain" />
-                ) : (
-                  ""
-                )}
+              <div className="absolute right-1 -translate-y-[50%] h-[36px]">
+                <img
+                  src={`${
+                    cardType && cardType == null
+                      ? ""
+                      : cardType === "master"
+                      ? "../mastercard.svg"
+                      : cardType === "visa"
+                      ? "../visa.svg"
+                      : cardType === "verve"
+                      ? "../verve.png"
+                      : ""
+                  }`}
+                  // src="../mastercard.svg"
+                  alt=""
+                  className="h-[8px] object-contain"
+                />
               </div>
             </div>
-            {/* 
-            <p className="text-xs trackin text-orange-400 leading-[24px] tracking-[0.3px] px-2">
-              {errorMessage}
-            </p> */}
           </div>
           <div className="flex  flex-row gap-2 md:gap-5 justify-around mt-2">
             <div class="md:w-[35%] ">
@@ -294,14 +284,22 @@ const CardDetails = () => {
               </label>
               <div class="input-field ">
                 <input
-                  className="block w-full px-2 py-[5px] md:px-4 md:py-[9px] placeholder:text-[#A0AEC0] placeholder:font-normal font-medium text-[#1A202C] text-[16px] leading-[24px] tracking-[0.3px] bg-white border border-[#E2E8F0]  rounded-xl focus:outline-none focus:ring-[#124072] focus:border-[#124072] sm:text-sm"
+                  className="block w-full px-2 py-[5px] md:px-4 md:py-[9px] placeholder:text-[#A0AEC0] placeholder:font-normal font-medium text-[#1A202C] text-[16px] leading-[24px] tracking-[0.3px] bg-white border border-[#E2E8F0]  rounded-md focus:outline-none focus:ring-[#124072] focus:border-[#124072] sm:text-sm"
                   required
                   placeholder="MM / YY"
                   id="c_expiry"
                   onChange={onChangeExp}
                   value={expriy_format(expiry)}
                 />
-                <div id="c_expiry_error"></div>
+                {expiryErrorMessage ? (
+                  <div id="c_expiry_error">
+                    <p className="text-[6px] text-red-500">
+                      Invalid Card expiry
+                    </p>
+                  </div>
+                ) : (
+                  ""
+                )}
               </div>
             </div>
 
@@ -311,12 +309,13 @@ const CardDetails = () => {
               </label>
               <input
                 id="c_cvv"
-                type="password"
-                className="block w-full px-2 py-[5px] md:px-4 md:py-[9px] text-center placeholder:text-[#A0AEC0] placeholder:font-normal font-medium text-[#1A202C] text-[16px] leading-[24px] tracking-[0.3px] bg-white border border-[#E2E8F0]  rounded-xl focus:outline-none focus:ring-[#124072] focus:border-[#124072] sm:text-sm"
-                placeholder="***"
+                type="tel"
+                className="block w-full px-2 py-[5px] md:px-4 md:py-[9px] placeholder:text-[#A0AEC0] placeholder:font-normal font-medium text-[#1A202C] text-[16px] leading-[24px] tracking-[0.3px] bg-white border border-[#E2E8F0]  rounded-md focus:outline-none focus:ring-[#124072] focus:border-[#124072] sm:text-sm"
+                // placeholder="123"
                 autoFocus
                 required
-                maxLength="3"
+                autocomplete="off"
+                maxLength="4"
                 onChange={handlecvv}
               />
             </div>
@@ -325,30 +324,35 @@ const CardDetails = () => {
             <button
               // onClick={handlePayment}
               type="submit"
-              className="py-[9px] items-center rounded-[16px] w-[80%]  md:w-[50%] mx-auto bg-[#124072] text-[white] text-[10px] leading-[24px] tracking-[0.2px] font-bold flex justify-center "
+              disabled={disabled}
+              className={`py-[9px] items-center rounded-[8px] w-[80%]  md:w-full mx-auto ${
+                disabled ? "bg-[#174e88d2]" : "bg-[#124072]"
+              } text-[white] text-[10px] leading-[24px] tracking-[0.2px] font-bold flex justify-center `}
             >
               Pay {currency} {amount}{" "}
               {loading && (
-                <svg
-                  className="ml-4 w-6 h-6 text-[white] animate-spin"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                >
-                  <circle
-                    className="opacity-25"
-                    cx="12"
-                    cy="12"
-                    r="10"
-                    stroke="currentColor"
-                    stroke-width="4"
-                  ></circle>
-                  <path
-                    className="opacity-75"
-                    fill="currentColor"
-                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                  ></path>
-                </svg>
+                <img src="../../spinner.svg" alt="" className="ml-4 w-6 h-6 " />
+
+                // <svg
+                //   className="ml-4 w-6 h-6 text-[white] animate-spin"
+                //   xmlns="http://www.w3.org/2000/svg"
+                //   fill="none"
+                //   viewBox="0 0 24 24"
+                // >
+                //   <circle
+                //     className="opacity-25"
+                //     cx="12"
+                //     cy="12"
+                //     r="10"
+                //     stroke="currentColor"
+                //     stroke-width="4"
+                //   ></circle>
+                //   <path
+                //     className="opacity-75"
+                //     fill="currentColor"
+                //     d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                //   ></path>
+                // </svg>
               )}
             </button>
           </div>

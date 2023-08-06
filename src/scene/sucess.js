@@ -13,6 +13,12 @@ const Successfull = () => {
     setOrigin(url);
   });
 
+
+  const closeWidget = () => {
+    window.open(document.referrer, "_parent", "");
+  }
+
+
   return (
     <div className="py-5 w-full px-[16px] md:px-[20px]">
       <h3 className="text-[20px] text-gray-500 text-center  font-bold pb-1">
@@ -37,11 +43,11 @@ const Successfull = () => {
         </svg>
       </div>
 
-      <Link to={`${origin}`}>
+      {/* <Link to={`${origin}`}> */}
         <button
           type="button"
-          // onClick={() => navigate("/")}
-          class="py-[9px] mx-auto rounded-[16px] w-full md:w-[60%] my-[15px] bg-[#124072] text-[#ffffff] text-[14px] leading-[24px] tracking-[0.2px] flex justify-center "
+          onClick={closeWidget}
+          className="py-[9px] items-center rounded-[8px] w-[80%]  md:w-full mx-auto bg-[#124072] text-[white] text-[14px] leading-[24px] tracking-[0.2px] font-bold flex justify-center "
         >
           Go back to page{" "}
           {/* {isLoading && (
@@ -67,7 +73,7 @@ const Successfull = () => {
         </svg>
       )} */}
         </button>{" "}
-      </Link>
+      {/* </Link> */}
     </div>
   );
 };

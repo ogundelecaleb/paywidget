@@ -8,6 +8,7 @@ const Otp = () => {
   const [
     successCallbackStr,
     publicKey,
+    merchantLogo,
     sessionRef,
     currency,
     amount,
@@ -16,6 +17,7 @@ const Otp = () => {
     firstName,
     lastName,
     phoneNumber,
+    redirectUrl,
   ] = useOutletContext();
   const navigate = useNavigate();
   const [otp, setOtp] = useState("");
@@ -41,15 +43,15 @@ const Otp = () => {
       },
       body: JSON.stringify({
         otp: otp,
-        transactionReference: location.state
+        transactionReference: location.state.transactionReference
       })});
     const data = await response.json(); //
-    if ( data?.data && data?.data.transactionStatus === "Success") {
+    if ( data?.data && data?.data?.transactionStatus === "Success") {
       console.log( data?.data?.transactionStatus)
-      navigate("/success");
+      navigate("/index/success");
       setLoading(false)
       console.log("otpsuccessful");
-    } else if (!data.isSuccessful || data?.data.transactionStatus === "Failed") {
+    } else if (!data.isSuccessful || data?.data?.transactionStatus === "Failed") {
       navigate("/index/failed");
       setLoading(false)
       console.log("error message:", data.message || data.title || "");
@@ -62,11 +64,11 @@ const Otp = () => {
         Validate OTP 
       </h3>
       <p className="text-[#718096] text-sm mb-5">
-        We have sent code to your email
+        {location.state.providermessage}
       </p>
 
       <OTPInput
-        className="py-7 text-[#718096]"
+        className="py-7 text-[#323942] max-w-[300px] mb-4 mx-auto"
         value={otp}
         onChange={setOtp}
         autoFocus
@@ -81,39 +83,25 @@ const Otp = () => {
           borderRadius: "5px",
           border: "1px solid #718096",
           margin: "0 auto",
+          maximumWidth: "300px",
           // background-color: "#718096",
         }}
       />
-      <ResendOTP handelResendClick={() => console.log("Resend clicked")} />
+      {/* <ResendOTP handelResendClick={() => console.log("Resend clicked")} /> */}
 
       <button
         type="button"
         onClick={handleOtp}
-        class="py-[9px] items-center rounded-[16px] w-full my-[15px] bg-[#124072] text-[#ffffff] text-[16px] leading-[24px] tracking-[0.2px] font-bold flex justify-center "
-      >
-        Validate OTP{" "}
-        {/* {isLoading && (
-        <svg
-          class="ml-4 w-6 h-6 text-white animate-spin"
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
+        className="py-[9px] items-center rounded-[8px] w-[80%]  md:w-full mx-auto bg-[#124072] text-[white] text-[14px] leading-[24px] tracking-[0.2px] font-bold flex justify-center "
         >
-          <circle
-            class="opacity-25"
-            cx="12"
-            cy="12"
-            r="10"
-            stroke="currentColor"
-            stroke-width="4"
-          ></circle>
-          <path
-            class="opacity-75"
-            fill="currentColor"
-            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-          ></path>
-        </svg>
-      )} */}
+        Validate OTP{" "}
+        {loading && (
+            <img
+            src="../../spinner1.svg"
+            alt=""
+            className="ml-4 w-8 h-8 bg-transparent"
+          />
+          )}
       </button>
     </div>
   );

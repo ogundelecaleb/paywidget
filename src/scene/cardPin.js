@@ -7,6 +7,7 @@ const CardPin = () => {
   const [
     successCallbackStr,
     publicKey,
+    merchantLogo,
     sessionRef,
     currency,
     amount,
@@ -68,13 +69,9 @@ const CardPin = () => {
         var closeFunc = window["closeWidget"];
         const newTab = window.open("", "_blank");
 
-        //call the close widget function stored in the windows
-        window["closeWidget"] = "closeFunc";
-
-        // window.focus();
-        console.log(window);
         // Set the content of the new page
         if (newTab != null) {
+          window.open(document.referrer, "_parent", "")
           newTab.document
             .write(`<html ><head><title>Document</title></head><body>${stringedBody}<script>
             var from = document.getElementById("formId");
@@ -87,35 +84,30 @@ const CardPin = () => {
           console.log(newTab);
         }
       } else if (data.data?.details?.IsAuthRequired) {
-        navigate("/index/otp", { state: data?.data?.transactionReference });
+        navigate("/index/otp", { state: {transactionReference:data?.data?.transactionReference, providermessage:data?.data?.details?.ProviderMessage }});
       } else if (
         data.data?.details?.IsAuthRequired === false &&
         data.data?.details?.status === "Processing"
       ) {
         console.log(data?.data?.transactionReference);
 
-
-        fetch(`${BaseApiUrl}/payment/status?transactionReference=${data?.data?.transactionReference}&clientReference=${data?.data?.clientReference}`, {
-          method: "GET",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-            "Public-Key": publicKey,
-          },
-          // params: {
-          //   TransactionReference: data?.data?.transactionReference,
-          // },
-        })
+        fetch(
+          `${BaseApiUrl}/payment/status?transactionReference=${data?.data?.transactionReference}&clientReference=${data?.data?.clientReference}`,
+          {
+            method: "GET",
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+              "Public-Key": publicKey,
+            },
+          }
+        )
           .then((response) => response.json())
           .then((res) => {
             if (res.data?.transactionStatus === "Success") {
-              navigate("/index/success", {
-                
-              });
-            } else if  (res.data?.transactionStatus === "Failed") {
-              navigate("/index/failed", {
-                
-              });
+              navigate("/index/success", {});
+            } else if (res.data?.transactionStatus === "Failed") {
+              navigate("/index/failed");
             }
           });
       } else if (
@@ -127,7 +119,6 @@ const CardPin = () => {
         });
       }
       setLoading(false);
-      console.log("CHARGEsuccessful");
     } else {
       setLoading(false);
       console.log("error message: not successful");
@@ -163,30 +154,15 @@ const CardPin = () => {
         <button
           type="submit"
           // onClick={handleOtp}
-          class="py-[9px] items-center rounded-[16px] w-full mt-[20px] bg-[#124072] text-[#ffffff] text-[16px] leading-[24px] tracking-[0.2px] font-bold flex justify-center "
+          className="py-[9px] items-center rounded-[8px] w-[80%]  md:w-full mx-auto bg-[#124072] text-[white] text-[14px] leading-[24px] tracking-[0.2px] font-bold flex justify-center "
         >
           Submit{" "}
           {loading && (
-            <svg
-              class="ml-4 w-6 h-6 text-white animate-spin"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-            >
-              <circle
-                class="opacity-25"
-                cx="12"
-                cy="12"
-                r="10"
-                stroke="currentColor"
-                stroke-width="4"
-              ></circle>
-              <path
-                class="opacity-75"
-                fill="currentColor"
-                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-              ></path>
-            </svg>
+            <img
+              src="../../spinner1.svg"
+              alt=""
+              className="ml-4 w-8 h-8 bg-transparent"
+            />
           )}
         </button>
       </form>
