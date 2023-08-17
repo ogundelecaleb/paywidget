@@ -6,8 +6,8 @@ import Modal from "./component/Modal";
 import { Outlet } from "react-router-dom";
 
 const WidgetHome = () => {
-  // const BaseApiUrl = "https://paymentgatewayapi.paylodeservices.com/v1";
-  const BaseApiUrl = "http://94.229.79.27:39213/v1";
+  const BaseApiUrl = "https://paymentgatewayapi.paylodeservices.com/v1";
+  // const BaseApiUrl = "http://94.229.79.27:39213/v1";
   const [amount, setAmount] = useState("200");
   const [isOpen, setIsOpen] = useState(true);
   const [callbackStr, setCallbackStr] = useState(null);
@@ -63,23 +63,23 @@ const WidgetHome = () => {
     processPayment({ publicKey, secretKey, amount, currency });
   }, [publicKey]);
 
-  // const onCloseCallback = new Function(`return (${callbackStr})`)();
+  const onCloseCallback = new Function(`return (${callbackStr})`)();
 
   function handleCloseModal() {
     setIsOpen(false);
-    // const closeWidget = new Function(`return (${closewidgetStr})`)();
-    // if (typeof onCloseCallback === "function") {
-    //   onCloseCallback({ status: "closed" });
-    // }
-    // if (typeof closeWidget === "function") {
-    //   closeWidget({ status: "closed" });
-    // }
+    const closeWidget = new Function(`return (${closewidgetStr})`)();
+    if (typeof onCloseCallback === "function") {
+      onCloseCallback({ status: "closed" });
+    }
+    if (typeof closeWidget === "function") {
+      closeWidget({ status: "closed" });
+    }
   }
   const closeWidget = function () {
     setIsOpen(false);
   };
 
-  const processPayment = ({ publicKey, secretKey, currency, amount }) => {
+  const processPayment = ({ publicKey, currency, amount }) => {
     // You can use payment APIs or any other payment processing methods here
     console.log(amount);
     fetch(`${BaseApiUrl}/payment/initiate`, {
