@@ -12,3 +12,12 @@
       -moz-appearance: textfield !important;
     }
   }
+
+  .btn4 span{
+    transform: translateX(-101%);
+    transition: transform .2s ease-in
+  }
+  
+  .btn4:hover span{
+    transform: translateX(0)
+  }

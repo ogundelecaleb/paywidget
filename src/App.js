@@ -9,6 +9,7 @@ import FailedTransaction from "./failedTransaction";
 import Failed from "./scene/failed";
 import Successfull from "./scene/sucess";
 import CardPin from "./scene/cardPin";
+import Transfer from "./scene/transfer";
 
 const queryClient = new QueryClient();
 
@@ -25,6 +26,7 @@ const App = () => {
               <Route path="/index/failed" element={<Failed />} />
               <Route path="/index/success" element={<Successfull />} />
               <Route path="/index/cardpin" element={<CardPin />} />
+              <Route path="/index/transfer" element={<Transfer />} />
             </Route>{" "}
             <Route path="/success" element={<Success />} />
             <Route path="/failed" element={<FailedTransaction />} />

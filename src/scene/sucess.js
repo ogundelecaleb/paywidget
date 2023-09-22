@@ -16,6 +16,7 @@ const Successfull = () => {
 
   const closeWidget = () => {
     window.open(document.referrer, "_parent", "");
+    // window.parent.postMessage(message, '*');
   }
 
 

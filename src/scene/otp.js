@@ -61,6 +61,9 @@ const Otp = () => {
         .then((response) => response.json())
         .then((res) => {
           if (res.data?.transactionStatus === "Success") {
+            const success = "success"
+            window.parent.postMessage(success, '*');
+
             navigate("/index/success");
           } else if (res.data?.transactionStatus === "Failed") {
             navigate("/index/failed");
@@ -91,7 +94,7 @@ const Otp = () => {
         Validate OTP
       </h3>
       <p className="text-[#718096] text-sm mb-5">
-        {location.state.providermessage}
+        {/* {location.state.providermessage} */}
       </p>
 
       <OTPInput

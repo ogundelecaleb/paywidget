@@ -32,7 +32,9 @@ const CardDetails = () => {
   /*eslint no-unused-vars: 0*/
   /*eslint no-useless-escape: 0*/
   /*eslint no-new-func: 0*/
-  const onCloseCallback = new Function(`return (${successCallbackStr})`)();
+  // const onCloseCallback = Function('return ' + successCallbackStr)();
+
+  // const onCloseCallback = new Function(`return (${successCallbackStr})`)();
 
   useEffect(() => {
     splitExpry();
@@ -278,11 +280,11 @@ const CardDetails = () => {
             </div>
           </div>
           <div className="flex  flex-row gap-2 md:gap-5 justify-around mt-2">
-            <div class="md:w-[35%] ">
+            <div className="md:w-[35%] ">
               <label className="text-[#718096]  text-[10px] leading-[21px] tracking-[0.2px] font-bold mb-[7px]">
                 Expiry Date
               </label>
-              <div class="input-field ">
+              <div className="input-field ">
                 <input
                   className="block w-full px-2 py-[5px] md:px-4 md:py-[9px] placeholder:text-[#A0AEC0] placeholder:font-normal font-medium text-[#1A202C] text-[16px] leading-[24px] tracking-[0.3px] bg-white border border-[#E2E8F0]  rounded-md focus:outline-none focus:ring-[#124072] focus:border-[#124072] sm:text-sm"
                   required
@@ -314,7 +316,7 @@ const CardDetails = () => {
                 // placeholder="123"
                 autoFocus
                 required
-                autocomplete="off"
+                autoComplete="off"
                 maxLength="4"
                 onChange={handlecvv}
               />
