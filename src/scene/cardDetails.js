@@ -41,7 +41,7 @@ const CardDetails = () => {
     if (expiry.length > 1 && cvv > 1 && unpartCardNumber > 1) {
       setDisabled(false);
     } else {
-      setDisabled(true)
+      setDisabled(true);
     }
 
     if (year != null && year.length > 3) {
@@ -232,6 +232,7 @@ const CardDetails = () => {
 
       <form
         onSubmit={() => {
+        
           navigate("/index/cardpin", {
             state: {
               unpartCardNumber: unpartCardNumber,
@@ -288,6 +289,7 @@ const CardDetails = () => {
                 <input
                   className="block w-full px-2 py-[5px] md:px-4 md:py-[9px] placeholder:text-[#A0AEC0] placeholder:font-normal font-medium text-[#1A202C] text-[16px] leading-[24px] tracking-[0.3px] bg-white border border-[#E2E8F0]  rounded-md focus:outline-none focus:ring-[#124072] focus:border-[#124072] sm:text-sm"
                   required
+                  type="tel"
                   placeholder="MM / YY"
                   id="c_expiry"
                   onChange={onChangeExp}

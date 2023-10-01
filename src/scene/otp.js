@@ -60,13 +60,15 @@ const Otp = () => {
       )
         .then((response) => response.json())
         .then((res) => {
-          if (res.data?.transactionStatus === "Success") {
-            const success = "success"
-            window.parent.postMessage(success, '*');
+          if (res.data?.transactionStatus == "Success") {
+           
 
             navigate("/index/success");
-          } else if (res.data?.transactionStatus === "Failed") {
+          } else if (res.data?.transactionStatus == "Failed") {
             navigate("/index/failed");
+            
+
+            navigate("/index/success");
           }
         });
   
@@ -90,15 +92,15 @@ const Otp = () => {
 
   return (
     <div className="py-5 w-full  px-[20px]">
-      <h3 className="text-[20px] text-gray-500  font-bold pb-1">
+      <h3 className="text-[20px] text-gray-500 text-center  font-bold pb-1">
         Validate OTP
       </h3>
       <p className="text-[#718096] text-sm mb-5">
-        {/* {location.state.providermessage} */}
+        {location.state.providermessage ? location.state.providermessage : "" }
       </p>
 
       <OTPInput
-        className="py-7 text-[#323942] max-w-[300px] mb-4 mx-auto"
+        className="py-7 text-[#323942] flex justify-center mb-4 mx-auto"
         value={otp}
         onChange={setOtp}
         autoFocus
@@ -112,8 +114,10 @@ const Otp = () => {
           height: "28px",
           borderRadius: "5px",
           border: "1px solid #718096",
-          margin: "0 auto",
+          margin: "0 2px",
           maximumWidth: "300px",
+          
+
           // background-color: "#718096",
         }}
       />

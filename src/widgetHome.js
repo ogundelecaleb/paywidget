@@ -115,7 +115,7 @@ const WidgetHome = () => {
   return (
     <div>
       <Modal isOpen={isOpen} onClose={handleCloseModal}>
-        <div className="inline-block relative overflow-hidden text-left align-bottom transition-all transform bg-[white] rounded-md  shadow-xl sm:my-8 sm:align-middle min-w-[400px] md:min-w-[450px] md:max-w-[450px] ">
+        <div className="inline-block relative overflow-hidden text-left align-bottom transition-all transform bg-[white] rounded-md  shadow-xl sm:my-8 sm:align-middle min-w-[360px] md:min-w-[450px] md:max-w-[450px] ">
           {/* <AiFillCloseCircle
             onClick={handleCloseModal}
             className="cursor-pointer absolute right-1   top-2 z-20  "
@@ -124,7 +124,7 @@ const WidgetHome = () => {
             <div className="flex flex-col md:flex-row ">
               <SideBar logo={merchantLogo} />
               <div className="flex flex-col w-full">
-                <Outlet
+              <Outlet
                   context={[
                     successCallbackStr,
                     publicKey,
@@ -142,7 +142,7 @@ const WidgetHome = () => {
                 />
 
                
-                <div className="px-[10px] md:hidden">
+                {/* <div className="px-[10px] md:hidden">
                   <div className="flex items-center text-center mb-2">
                     <div className="h-[1px] w-full bg-slate-400 "></div>
                     <p className="w-full text-gray-500">or pay with</p>
@@ -171,7 +171,7 @@ const WidgetHome = () => {
                       pay with Transfer
                     </button>
                   </Link>
-                </div>
+                </div> */}
               </div>
             </div>{" "}
           </div>

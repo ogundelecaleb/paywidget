@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from "react";
-import OTPInput, { ResendOTP } from "otp-input-react";
+import React, { useState} from "react";
 import { useNavigate, useLocation, useOutletContext } from "react-router-dom";
 import CryptoJS from "crypto-js";
 import { AES, enc } from "crypto-js";
@@ -35,23 +34,20 @@ const CardPin = () => {
     channel: "Card",
     amount: 100,
     chargeParameters: {
-         cardNumber: "4848422614652489",
+      cardNumber: "4848422614652489",
       expiryMonth: "02",
       expiryYear: "2025",
       cardCvv: "253",
-      cardPin: "1927"
-  
+      cardPin: "1927",
     },
     customerInformation: {
-       email: "mos6ke@gmail.com",
+      email: "mos6ke@gmail.com",
       phoneNumber: "07060876271",
       fullName: "Okunade Moses",
-      customerId: "mypersonalId"
-  
+      customerId: "mypersonalId",
     },
-  
-    redirectUrl: "",
-    
+
+    redirectUrl: "",
   };
 
   const strindata = JSON.stringify(cardData);
@@ -67,7 +63,6 @@ const CardPin = () => {
 
     return encrypted.toString();
   }
-
 
   const handlePinN = (event) => {
     event.preventDefault();
@@ -93,7 +88,6 @@ const CardPin = () => {
 
     return encrypted.toString();
   }
- 
 
   async function handlePin(e) {
     e.preventDefault();
@@ -134,7 +128,7 @@ const CardPin = () => {
       if (data.data.details?.FormData?.Body !== undefined) {
         // Create a new HTML document
         let stringedBody = data?.data?.details?.FormData?.Body;
-        stringedBody = stringedBody.toString() || "Hello";
+        stringedBody = stringedBody.toString() || "string body";
         var closeFunc = window["closeWidget"];
         const newTab = window.open("", "_blank");
 
@@ -150,7 +144,6 @@ const CardPin = () => {
           // Close the document and focus on the new tab
           newTab.document.close();
           newTab.focus();
-          // console.log(newTab);
         }
       } else if (data.data?.details?.IsAuthRequired) {
         navigate("/index/otp", {
@@ -180,7 +173,11 @@ const CardPin = () => {
           .then((res) => {
             if (res.data?.transactionStatus === "Success") {
               navigate("/index/success", {});
+              // const message = "success";
+              // window.parent.postMessage(message, "*");
             } else if (res.data?.transactionStatus === "Failed") {
+              // const message = "failed";
+              // window.parent.postMessage(message, "*");
               navigate("/index/failed");
             }
           });
@@ -191,63 +188,63 @@ const CardPin = () => {
         navigate("/index/success", {
           state: data?.data?.details?.ProviderMessage,
         });
+        // const message = "success";
+        //       window.parent.postMessage(message, "*");
       }
       setLoading(false);
     } else {
       setLoading(false);
-      console.log("error message: not successful");
+      // const message = "failed";
+      // window.parent.postMessage(message, "*");
       navigate("/index/failed");
     }
   }
 
   return (
     <div className="w-[300px] mx-auto">
-    <div className="py-5 w-[100%]  px-[20px]">
-      
-      <h3 className="text-[20px] text-gray-500 text-center font-bold pb-1">
-        Input Card Pin
-      </h3>
+      <div className="py-5 w-[100%]  px-[20px]">
+        <h3 className="text-[20px] text-gray-500 text-center font-bold pb-1">
+          Input Card Pin
+        </h3>
 
-      <p className="text-[#718096] text-sm mb-5 text-center">
-        Put in card pin here
-      </p>
+        <p className="text-[#718096] text-sm mb-5 text-center">
+          Put in card pin here
+        </p>
 
-
-
-      <form onSubmit={handlePin}>
-        <div className="mx-auto my-4 w-full sm:my-[48px] md:my-[48px]">
-          {" "}
-          <input
-            id="pin"
-            type="password"
-            className="block mx-auto w-[78px] text-center px-4 py-[9px] placeholder:text-[#A0AEC0] placeholder:font-normal font-medium text-[#1A202C] text-[16px] leading-[24px] tracking-[0.3px] bg-white border border-[#E2E8F0]  rounded-lg focus:outline-none focus:ring-[#124072] focus:border-[#124072] sm:text-sm"
-            placeholder="****"
-            autoComplete="off"
-
-            autoFocus
-            required
-            value={pin}
-            onChange={(e) => {
-              setPin(e.target.value);
-            }}
-          />
-        </div>
-        <button
-          type="submit"
-          // onClick={handleOtp}
-          className="py-[9px] items-center rounded-[8px] w-[80%]  md:w-full mx-auto bg-[#124072] text-[white] text-[14px] leading-[24px] tracking-[0.2px] font-bold flex justify-center "
-        >
-          Submit{" "}
-          {loading && (
-            <img
-              src="../../spinner1.svg"
-              alt=""
-              className="ml-4 w-8 h-8 bg-transparent"
+        <form onSubmit={handlePin}>
+          <div className="mx-auto my-4 w-full sm:my-[48px] md:my-[48px]">
+            {" "}
+            <input
+              id="pin"
+              type="password"
+              className="block mx-auto w-[78px] text-center px-4 py-[9px] placeholder:text-[#A0AEC0] placeholder:font-normal font-medium text-[#1A202C] text-[16px] leading-[24px] tracking-[0.3px] bg-white border border-[#E2E8F0]  rounded-lg focus:outline-none focus:ring-[#124072] focus:border-[#124072] sm:text-sm"
+              placeholder="****"
+              autoComplete="off"
+              autoFocus
+              required
+              value={pin}
+              onChange={(e) => {
+                setPin(e.target.value);
+              }}
             />
-          )}
-        </button>
-      </form>
-    </div></div>
+          </div>
+          <button
+            type="submit"
+            // onClick={handleOtp}
+            className="py-[9px] items-center rounded-[8px] w-[80%]  md:w-full mx-auto bg-[#124072] text-[white] text-[14px] leading-[24px] tracking-[0.2px] font-bold flex justify-center "
+          >
+            Submit{" "}
+            {loading && (
+              <img
+                src="../../spinner1.svg"
+                alt=""
+                className="ml-4 w-8 h-8 bg-transparent"
+              />
+            )}
+          </button>
+        </form>
+      </div>
+    </div>
   );
 };
 
