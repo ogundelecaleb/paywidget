@@ -1,5 +1,6 @@
+/* eslint-disable */
 import React, { useState, useEffect } from "react";
-import OTPInput, { ResendOTP } from "otp-input-react";
+import OTPInput from "otp-input-react";
 import { useNavigate, useLocation, useOutletContext } from "react-router-dom";
 
 const Otp = () => {
@@ -20,16 +21,22 @@ const Otp = () => {
   ] = useOutletContext();
   const navigate = useNavigate();
   const [otp, setOtp] = useState("");
-  const [transactionStat, setTransactionStat] = useState("");
   const [loading, setLoading] = useState(false);
+  const [providerMessage, setProviderMessage] = useState("")
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
+
 
   useEffect(() => {
     console.log("otp:", otp);
-    console.log(transactionStat);
+    setProviderMessage(location.state?.providermessage)
+
   });
 
   async function handleOtp(e) {
+
     e.preventDefault();
+    setIsButtonDisabled(true);
+
     setLoading(true);
     const response = await fetch(`${BaseApiUrl}/payment/validate`, {
       method: "POST",
@@ -40,7 +47,7 @@ const Otp = () => {
       },
       body: JSON.stringify({
         otp: otp,
-        transactionReference: location.state.transactionReference,
+        transactionReference: location.state?.transactionReference,
       }),
     });
     const data = await response.json(); //
@@ -96,7 +103,7 @@ const Otp = () => {
         Validate OTP
       </h3>
       <p className="text-[#718096] text-sm mb-5">
-        {location.state.providermessage ? location.state.providermessage : "" }
+        {providerMessage ? providerMessage : "" }
       </p>
 
       <OTPInput
@@ -116,16 +123,14 @@ const Otp = () => {
           border: "1px solid #718096",
           margin: "0 2px",
           maximumWidth: "300px",
-          
-
-          // background-color: "#718096",
-        }}
+                  }}
       />
       {/* <ResendOTP handelResendClick={() => console.log("Resend clicked")} /> */}
 
       <button
         type="button"
         onClick={handleOtp}
+        disabled={isButtonDisabled}
         className="py-[9px] items-center rounded-[8px] w-[80%]  md:w-full mx-auto bg-[#124072] text-[white] text-[14px] leading-[24px] tracking-[0.2px] font-bold flex justify-center "
       >
         Validate OTP{" "}

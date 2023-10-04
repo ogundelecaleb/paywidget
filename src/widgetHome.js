@@ -1,10 +1,8 @@
+/* eslint-disable */
 import React, { useEffect, useState } from "react";
 import SideBar from "./component/sideBar";
-import { AiFillCloseCircle } from "react-icons/ai";
-// import { encrypt, decrypt, compare } from "n-krypta";
 import Modal from "./component/Modal";
-import { Link, Outlet } from "react-router-dom";
-import { BsCreditCard } from "react-icons/bs";
+import { Outlet } from "react-router-dom";
 
 const WidgetHome = () => {
   const BaseApiUrl = "https://paymentgatewayapi.paylodeservices.com/v1";
@@ -80,9 +78,7 @@ const WidgetHome = () => {
     //   closeWidget({ status: "closed" });
     // }
   }
-  // const closeWidget = function () {
-  //   setIsOpen(false);
-  // };
+ 
 
   const processPayment = ({ publicKey, currency, amount }) => {
     // You can use payment APIs or any other payment processing methods here
@@ -105,7 +101,6 @@ const WidgetHome = () => {
           setMerchantLogo(res.data.merchantLogo);
           setMerchantName(res.data.merchantName);
 
-          console.log("initiatesuccessful");
         } else if (!res.isSuccessful) {
           console.log("error message:", res.message || res.title || "");
         }

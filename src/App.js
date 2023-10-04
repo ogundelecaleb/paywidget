@@ -4,24 +4,20 @@ import WidgetHome from "./widgetHome";
 import CardDetails from "./scene/cardDetails";
 import Otp from "./scene/otp";
 import Success from "./success";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import FailedTransaction from "./failedTransaction";
 import Failed from "./scene/failed";
 import Successfull from "./scene/sucess";
 import CardPin from "./scene/cardPin";
 import Transfer from "./scene/transfer";
 
-const queryClient = new QueryClient();
 
 const App = () => {
   return (
     <div>
-      <QueryClientProvider client={queryClient}>
         <Router>
           <Routes>
-            <Route path="/" element={<WidgetHome />}>
+            <Route element={<WidgetHome />}>
               <Route index element={<CardDetails />} />
-              <Route path="/index/cardDetails" element={<CardDetails />} />
               <Route path="/index/otp" element={<Otp />} />
               <Route path="/index/failed" element={<Failed />} />
               <Route path="/index/success" element={<Successfull />} />
@@ -32,7 +28,6 @@ const App = () => {
             <Route path="/failed" element={<FailedTransaction />} />
           </Routes>
         </Router>
-      </QueryClientProvider>
     </div>
   );
 };
