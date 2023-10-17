@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 
@@ -44,7 +45,7 @@ const Success = () => {
           &#8203;
         </span>
         <div className="inline-block py-[20px] px-[40px] relative overflow-hidden text-left align-bottom transition-all transform bg-[white] rounded-xl shadow-xl sm:my-8 sm:align-middle sm:max-w-[28rem] sm:w-full">
-          <h3 className="text-[20px] text-[#1a202c] text-center  font-bold pb-1">
+        <h3 className="text-[18px] text-gray-500 text-center  font-semibold pb-1">
             Payment Successfull !!
           </h3>
           <p className="text-[#718096] text-center text-sm mb-5">Thank You!</p>

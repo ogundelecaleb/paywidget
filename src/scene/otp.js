@@ -27,7 +27,7 @@ const Otp = () => {
 
 
   useEffect(() => {
-    console.log("otp:", otp);
+    // console.log("otp:", otp);
     setProviderMessage(location.state?.providermessage)
 
   });
@@ -99,7 +99,7 @@ const Otp = () => {
 
   return (
     <div className="py-5 w-full  px-[20px]">
-      <h3 className="text-[20px] text-gray-500 text-center  font-bold pb-1">
+      <h3 className="text-[18px] text-gray-500 text-center  font-semibold pb-1">
         Validate OTP
       </h3>
       <p className="text-[#718096] text-sm mb-5">

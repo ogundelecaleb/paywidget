@@ -9,6 +9,7 @@ import Failed from "./scene/failed";
 import Successfull from "./scene/sucess";
 import CardPin from "./scene/cardPin";
 import Transfer from "./scene/transfer";
+import CardPin2 from "./scene/cardPin2";
 
 
 const App = () => {
@@ -22,6 +23,7 @@ const App = () => {
               <Route path="/index/failed" element={<Failed />} />
               <Route path="/index/success" element={<Successfull />} />
               <Route path="/index/cardpin" element={<CardPin />} />
+              <Route path="/index/cardpin2" element={<CardPin2 />} />
               <Route path="/index/transfer" element={<Transfer />} />
             </Route>{" "}
             <Route path="/success" element={<Success />} />

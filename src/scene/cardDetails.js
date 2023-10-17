@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+/* eslint-disable */
+import React, { useEffect, useRef, useState } from "react";
 import { useNavigate, useOutletContext } from "react-router-dom";
 
 const CardDetails = () => {
@@ -28,6 +29,8 @@ const CardDetails = () => {
   const [expiry, setExpiry] = useState("");
   const [unpartCardNumber, setUnpartCardNumber] = useState("");
   const [loading, setLoaading] = useState(false);
+  const cardNumRef = useRef(null);
+  const expiryRef = useRef(null);
 
   /*eslint no-unused-vars: 0*/
   /*eslint no-useless-escape: 0*/
@@ -59,6 +62,10 @@ const CardDetails = () => {
   function handleCardNumber(event) {
     let new_cardNumber = event.target.value;
     setCardNumber(new_cardNumber);
+    if (new_cardNumber.length == 20) {
+      // Focus on the next input field
+      expiryRef.current.focus();
+    }
     var specialCharRegExp = /(?=.*?[#?!@$%^&*-])/;
     if (new_cardNumber.match(specialCharRegExp)) {
       setTimeout(function () {
@@ -219,29 +226,25 @@ const CardDetails = () => {
         </div>
         <div>
           <p>{email}</p>
-          <p>
-            Pay{" "}
-            <span className="font-bold text-[#124072]">
-              {/* {currencyMap[currency]?? currencyMap["NGN"]} */}
-              {currency === "NGN" ? "₦" : currency === "USD" ? "$" : ""}
-              {amount}
-            </span>{" "}
+          <p className="font-semibold text-[#124072] text-[18px]">
+            Pay
+            {currency === "NGN" ? "₦" : currency === "USD" ? "$" : ""}
+            {amount}
           </p>
         </div>
       </div>
 
       <form
-        onSubmit={() => {
-        
-          navigate("/index/cardpin", {
-            state: {
-              unpartCardNumber: unpartCardNumber,
-              month: month,
-              year: "20" + year,
-              cvv: cvv,
-            },
-          });
-        }}
+        // onSubmit={() => {
+        //   navigate("/index/cardpin2", {
+        //     state: {
+        //       unpartCardNumber: unpartCardNumber,
+        //       month: month,
+        //       year: "20" + year,
+        //       cvv: cvv,
+        //     },
+        //   });
+        // }}
       >
         <div className="overflow-hidden  sm:rounded-md">
           <div className="container mt-[20px]">
@@ -256,8 +259,8 @@ const CardDetails = () => {
                 placeholder="0000 0000 0000 0000"
                 autoFocus
                 required
-                // value={cardNumber}
                 onChange={handleCardNumber}
+                ref={cardNumRef}
               />
 
               <div className="absolute right-1 -translate-y-[50%] h-[36px]">
@@ -294,6 +297,7 @@ const CardDetails = () => {
                   id="c_expiry"
                   onChange={onChangeExp}
                   value={expriy_format(expiry)}
+                  ref={expiryRef}
                 />
                 {expiryErrorMessage ? (
                   <div id="c_expiry_error">
@@ -326,7 +330,16 @@ const CardDetails = () => {
           </div>
           <div className="mt-4">
             <button
-              // onClick={handlePayment}
+              onClick={() => {
+                navigate("/index/cardpin2", {
+                  state: {
+                    unpartCardNumber: unpartCardNumber,
+                    month: month,
+                    year: "20" + year,
+                    cvv: cvv,
+                  },
+                });
+              }}
               type="submit"
               disabled={disabled}
               className={`py-[9px] items-center rounded-[8px] w-[80%]  md:w-full mx-auto ${

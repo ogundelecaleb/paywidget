@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React, { useEffect} from "react";
 
 const Successfull = () => {
@@ -15,21 +16,18 @@ const Successfull = () => {
       const message = "success"
       window.parent.postMessage(message, '*');
     },3000)
-    setTimeout(() =>{
-      const message = "close"
-      window.parent.postMessage(message, '*');
-    },4000)
+    
   },[]);
 
 
-  const closeWidget = () => {
-    window.open(document.referrer, "_parent", "");
-  }
+  // const closeWidget = () => {
+  //   window.open(document.referrer, "_parent", "");
+  // }
 
 
   return (
     <div className="py-5 w-full px-[16px] md:px-[20px]">
-      <h3 className="text-[20px] text-gray-500 text-center  font-bold pb-1">
+      <h3 className="text-[18px] text-gray-500 text-center  font-semibold pb-1">
         Transaction Successful
       </h3>
       <p className="text-[#718096] text-center text-sm mb-5"></p>
@@ -42,35 +40,14 @@ const Successfull = () => {
       </div>
 
       {/* <Link to={`${origin}`}> */}
-        <button
+        {/* <button
           type="button"
           onClick={closeWidget}
           className="py-[9px] items-center rounded-[8px] w-[80%]  md:w-full mx-auto bg-[#124072] text-[white] text-[14px] leading-[24px] tracking-[0.2px] font-bold flex justify-center "
         >
           Go back to page{" "}
-          {/* {isLoading && (
-        <svg
-          class="ml-4 w-6 h-6 text-white animate-spin"
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-        >
-          <circle
-            class="opacity-25"
-            cx="12"
-            cy="12"
-            r="10"
-            stroke="currentColor"
-            stroke-width="4"
-          ></circle>
-          <path
-            class="opacity-75"
-            fill="currentColor"
-            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-          ></path>
-        </svg>
-      )} */}
-        </button>{" "}
+         
+        </button>{" "} */}
       {/* </Link> */}
     </div>
   );

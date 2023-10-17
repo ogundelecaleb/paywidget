@@ -1,11 +1,9 @@
-/* eslint-disable */
 import React, { useState } from "react";
 import { useNavigate, useLocation, useOutletContext } from "react-router-dom";
 import CryptoJS from "crypto-js";
 import OTPInput from "otp-input-react";
-import { BsBoxArrowInUpRight} from "react-icons/bs";
 
-const CardPin = () => {
+const CardPin2 = () => {
   const location = useLocation();
   const secret = process.env.REACT_APP_ENCRY_CODE;
   const [
@@ -28,8 +26,6 @@ const CardPin = () => {
   const [encry, setEncry] = useState("");
   const [dencry, setDencry] = useState("");
   const [transactionRef, setTransactionRef] = useState("");
-  const [stringedBody, setStringedBody] = useState("");
-  const [redirect, setRedirect] = useState(false);
 
   const cardData = {
     clientReference: "",
@@ -135,22 +131,21 @@ const CardPin = () => {
         // Create a new HTML document
         let stringedBody = data?.data?.details?.FormData?.Body;
         stringedBody = stringedBody.toString() || "string body";
-        setStringedBody(stringedBody);
-        setRedirect(true);
-        // const newTab = window.open("", "_blank");
-        // // Set the content of the new page
-        // if (newTab != null) {
-        //   // window.open(document.referrer, "_parent", "");
-        //   newTab.document
-        //     .write(`<html ><head><title>Document</title></head><body>${stringedBody}<script>
-        //     var from = document.getElementById("formId");
-        //     from.submit();
-        // </script></body></html>`);
+        var closeFunc = window["closeWidget"];
+        const newTab = window.open("", "_blank");
+        // Set the content of the new page
+        if (newTab != null) {
+          // window.open(document.referrer, "_parent", "");
+          newTab.document
+            .write(`<html ><head><title>Document</title></head><body>${stringedBody}<script>
+            var from = document.getElementById("formId");
+            from.submit();
+        </script></body></html>`);
 
-        //   // Close the document and focus on the new tab
-        //   newTab.document.close();
-        //   newTab.focus();
-        // }
+          // Close the document and focus on the new tab
+          newTab.document.close();
+          newTab.focus();
+        }
       } else if (data.data?.details?.IsAuthRequired) {
         navigate("/index/otp", {
           state: {
@@ -206,25 +201,8 @@ const CardPin = () => {
     }
   }
 
-  const handleRedirect = () => {
-    const newTab = window.open("", "_blank");
-    // Set the content of the new page
-    if (newTab != null) {
-      // window.open(document.referrer, "_parent", "");
-      newTab.document
-        .write(`<html ><head><title>Document</title></head><body>${stringedBody}<script>
-        var from = document.getElementById("formId");
-        from.submit();
-    </script></body></html>`);
-
-      // Close the document and focus on the new tab
-      newTab.document.close();
-      newTab.focus();
-    }
-  };
-
   return (
-    <div className="relative">
+    <div className="">
       <div className="py-5 w-[100%]  px-[20px]">
         <div className="text-right text-[10px] pr-3 mt-2 flex items-center justify-between pb-4 ">
           <div>
@@ -239,13 +217,13 @@ const CardPin = () => {
           <div>
             <p>{email}</p>
             <p className="font-semibold text-[#124072] text-[18px]">
-              Pay
+              Pay 
               {currency === "NGN" ? "₦" : currency === "USD" ? "$" : ""}
               {amount}
             </p>
           </div>
         </div>
-
+        
         <div className=" mx-auto">
           <p className="text-[#718096] text-sm mb-5 text-center">
             Put in card pin here
@@ -288,27 +266,8 @@ const CardPin = () => {
           </button>
         </div>
       </div>
-
-     
-      {redirect && (
-        <div className="py-5 w-[100%] flex flex-col justify-between px-[20px] absolute top-[30%] bg-white h-[70%]">
-          <p className="text-center">
-            You will be redirected to continue this transaction
-          </p>
-          <div className="rounded-full h-[48px] w-[48px] mx-auto flex justify-center items-center text-white  bg-[#124072]">
-            <BsBoxArrowInUpRight className=" text-xl  text-white " />
-          </div>
-
-          <button
-            onClick={handleRedirect}
-            className="py-[9px] items-center rounded-[8px] w-[80%]  md:w-full mx-auto bg-[#124072] text-[white] text-[14px] leading-[24px] tracking-[0.2px] font-bold flex justify-center "
-          >
-            redirect
-          </button>
-        </div>
-      )}
     </div>
   );
 };
 
-export default CardPin;
+export default CardPin2;

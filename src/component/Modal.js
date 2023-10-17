@@ -30,9 +30,9 @@ const Modal = ({ isOpen, onClose, children }) => {
 
         {children}
         <div className="absolute w-full   bottom-[100px] z-[1000]">
-          <p className="text-center text-[14px] mx-auto">
+          <p className="text-center text-[14px] mx-auto hidden md:block">
             Powered by{" "}
-            <span className="font-bold cursor-pointer text-white"><a href="https://paylodeservices.com/" target="_blank">Paylode</a></span>
+            <span className="font-bold cursor-pointer text-white"><a href="https://paylodeservices.com/" target="_blank" rel="noreferrer">Paylode</a></span>
           </p>
         </div>
       </div>

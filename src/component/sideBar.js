@@ -32,7 +32,7 @@ const SideBar = ({ logo }) => {
             <p className="md:block hidden">Card</p>
             <p className=" md:hidden"> Pay With Card</p>
           </button>
-          <span  class="absolute inset-x-0 h-1 top-0 bg-[#174e88d2] w-[30%]"></span>
+          <span  className="absolute inset-x-0 h-1 top-0 bg-[#174e88d2] w-[30%]"></span>
           <div  className={`${window.location.pathname === "/" || window.location.pathname === "/index/otp" || window.location.pathname === "/index/pin" || window.location.pathname === "/index/success" || window.location.pathname === "/index/failed"  ? "hidden md:block" : "hidden"} absolute inset-x-0 h-1 top-0 bg-[#174e88d2]`}></div>
         </Link>
         {/* <Link

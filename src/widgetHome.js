@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import SideBar from "./component/sideBar";
 import Modal from "./component/Modal";
-import { Outlet } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 
 const WidgetHome = () => {
   const BaseApiUrl = "https://paymentgatewayapi.paylodeservices.com/v1";
@@ -39,7 +39,7 @@ const WidgetHome = () => {
     var closewidgetStr = params.get("closewidget");
     const onSuccessCallbackStr = params.get("onSuccessCallback");
 
-    console.log(params);
+    // console.log(params);
 
     setEmail(email);
     setAmount(amount);
@@ -69,21 +69,13 @@ const WidgetHome = () => {
 
   function handleCloseModal() {
     setIsOpen(false);
-    // const closeWidget = new Function(`return (${closewidgetStr})`)();
-
-    // if (typeof onCloseCallback === "function") {
-    //   onCloseCallback({ status: "closed" });
-    // }
-    // if (typeof closeWidget === "function") {
-    //   closeWidget({ status: "closed" });
-    // }
+   
   }
- 
 
   const processPayment = ({ publicKey, currency, amount }) => {
     // You can use payment APIs or any other payment processing methods here
 
-    console.log(amount);
+    // console.log(amount);
     fetch(`${BaseApiUrl}/payment/initiate`, {
       method: "POST",
       headers: {
@@ -100,7 +92,6 @@ const WidgetHome = () => {
           setCurrency(res.data.currency);
           setMerchantLogo(res.data.merchantLogo);
           setMerchantName(res.data.merchantName);
-
         } else if (!res.isSuccessful) {
           console.log("error message:", res.message || res.title || "");
         }
@@ -119,7 +110,7 @@ const WidgetHome = () => {
             <div className="flex flex-col md:flex-row ">
               <SideBar logo={merchantLogo} />
               <div className="flex flex-col w-full">
-              <Outlet
+                <Outlet
                   context={[
                     successCallbackStr,
                     publicKey,
@@ -136,36 +127,43 @@ const WidgetHome = () => {
                   ]}
                 />
 
-               
                 {/* <div className="px-[10px] md:hidden">
                   <div className="flex items-center text-center mb-2">
                     <div className="h-[1px] w-full bg-slate-400 "></div>
                     <p className="w-full text-gray-500">or pay with</p>
                     <div className="h-[1px] w-full bg-slate-400 "></div>
                   </div>
-                  <Link
-                    to="/"
-                  >
-                    <button className={`bg-gray-300 mb-2 rounded-lg text-center py-2 w-full ${
-                      window.location.pathname === "/"
-                        ? "text-[#174e88d2]  "
-                        : "text-gray-500 "
-                    }`}>
+                  <Link to="/">
+                    <button
+                      className={`bg-gray-300 mb-2 rounded-lg text-center py-2 w-full ${
+                        window.location.pathname === "/"
+                          ? "text-[#174e88d2]  "
+                          : "text-gray-500 "
+                      }`}
+                    >
                       pay with Card
                     </button>
                   </Link>
 
-                  <Link
-                    to="/index/transfer"
-                  >
-                    <button className={`bg-gray-300 mb-2 rounded-lg text-center py-2 w-full ${
-                      window.location.pathname === "/index/transfer"
-                        ? "text-[#174e88d2]  "
-                        : "text-gray-500 "
-                    }`}>
+                  <Link to="/index/transfer">
+                    <button
+                      className={`bg-gray-300 mb-2 rounded-lg text-center py-2 w-full ${
+                        window.location.pathname === "/index/transfer"
+                          ? "text-[#174e88d2]  "
+                          : "text-gray-500 "
+                      }`}
+                    >
                       pay with Transfer
                     </button>
                   </Link>
+                  <p className="text-center text-[14px] mx-auto mt-9 pb-2">
+                    Powered by{" "}
+                    <span className="font-bold cursor-pointer text-[#174e88d2]">
+                      <a href="https://paylodeservices.com/" target="_blank" rel="noreferrer">
+                        Paylode
+                      </a>
+                    </span>
+                  </p>
                 </div> */}
               </div>
             </div>{" "}
